@@ -7,30 +7,34 @@ LoginButton = "登录"
 # title
 LoginWindow = "login"
 ModeWindow = "mode"
+LookWindow = "look"
+WriteWindow = "write"
+SettingWindow = "setting"
 WrongInfoWindow = "wrong"
-
 
 # end of title
 main = gui("MainPage",windowSize)
 
 
 #---------------Function---------------------------------------------
-def subWindow(name):
+def subWindow(name):# start window define, the name has to be unique, and better pre-defined
     main.startSubWindow(name)
 
-def subWindowEnd():
+def subWindowEnd(): # end of window define
     main.stopSubWindow()
 
 
 def hideWindow(windowTitle):
     main.hideSubWindow(windowTitle, useStopFunction=False)
 
-def showWindow(windowTitle): // this only shows the specified window
+def showWindow(windowTitle): # this only shows the specified window
     main.showSubWindow(windowTitle, hide=False)
 
-def showWindowHideOthers(windowTitle): // this will hide all other windows
+def showWindowHideOthers(windowTitle): # this will hide all other windows
     main.showSubWindow(windowTitle, hide=True)
 
+def getLabelNameForWindow(windowName, labelName): # to obtain the unique id for the label in one specific window
+    return windowName + labelName
 
 #default argument    https://stackoverflow.com/questions/43279256/multiple-optional-arguments-python
 def setButton(ButtonName, background, width, height, foreground="black", relief="sunken", state="normal"):
@@ -66,14 +70,14 @@ def loginButtonPress(button):
 
 def loginWindowDefine():
     subWindow(LoginWindow)
-    main.addLabel("title", LoginPageTitle)
-    main.setLabelBg("color", LoginPageColor)
+    main.addLabel(LoginWindow+"title", LoginPageTitle)
+    main.setLabelBg(LoginWindow+"title", LoginPageColor)
 
     main.addLabelEntry("用户名")
     main.addLabelSecretEntry("密码")
 
     main.addButtons([LoginButton],loginButtonPress)
-    setButton(LoginButton)
+    setButton(LoginButton,"white",200,100)
     subWindowEnd()
 
 
@@ -83,47 +87,51 @@ def loginWindowDefine():
 
 ModePageTitle = "模式"
 ModePageColor = "bule"
-Mc1 = white
-Mw1 = 300
-Mh1 = 200
+Modecolor1 = "white"
+Modewidth1 = 300
+Modehigh1 = 200
 
+WriteButton = "write"
+LookButton = "Look"
+SettingButton = "setting"
+ReturnButton = "return"
 def WriteButtonPress(button):
-    subWindow(WriteWindow)
+    showWindow(WriteWindow)
 
 def LookButtonPress(button):
-    subWindow(LookWindow)
+    showWindow(LookWindow)
 
 def SettingButtonPress(button):
-    subWindow(SettingWindow)
+    showWindow(SettingWindow)
 
 def Return1ButtonPress(button):
-    subWindowEnd()
-    subWindow(LoginWindow)
+    showWindowHideOthers(LoginWindow)
 
 def ModeWindowDefine():
     subWindow(ModeWindow)
-    main.addLabel("title",ModePageTitle)
-    main.setLabelBg("color", ModePageColor)
+    main.addLabel(ModeWindow+"title",ModePageTitle)
+    main.setLabelBg(ModeWindow+"title", ModePageColor)
 
     main.addButtons([WriteButton],WriteButtonPress)
     main.addButtons([LookButton],LookButtonPress)
     main.addButtons([SettingButton],SettingButtonPress)
     main.addButtons([ReturnButton],Return1ButtonPress)
 
-    setButton(WriteButton,Mc1,Mw1,Mh1)
-    setButton(LookButton,Mc1,Mw1,Mh1)
-    setButton(SettingButton,Mc1,Mw1,Mh1)
-    setButton(Return1Button)
+    setButton(WriteButton,Modecolor1,Modewidth1,Modehigh1)
+    setButton(LookButton,Modecolor1,Modewidth1,Modehigh1)
+    setButton(SettingButton,Modecolor1,Modewidth1,Modehigh1)
+    setButton(ReturnButton, Modecolor1, Modewidth1, Modehigh1)
 
+    subWindowEnd()
 #---endof Mode window
 
 # Write window
 
 WritePageTitle = "写一写"
 WritePageColor = "yellow"
-Wc1 = "white"
-Ww1 = 100
-Wh1 = 100
+Writecolor1 = "white"
+Writewidth1 = 100
+Writehigh1 = 100
 
 # ADD
 def SubButtonPress(button):
@@ -132,10 +140,26 @@ def SubButtonPress(button):
 def ClosePress(button):
     main.hideWindow(ADD)
 
+def ADDWindowDefine():
+    subWindow(ADD)
+    main.addLabel(getLabelNameForWindow(ADD,"title"),"ADD")
+    main.setLabelBg(getLabelNameForWindow(ADD, "title"), "green")
+
+
+    main.addLabelEntry("时间")
+    main.addLabelEntry("地点")
+    main.addLabelEntry("事件")
+    main.addLabelEntry("备注")
+
+    main.addButtons([SubButton],SubButtonPress)
+    main.addButtons([Close], ClosePress)
+
+    subWindowEnd()
+
 def ADDButtonPress(button):
     subWindow(ADD)
-    main.addLabel("title", "ADD")
-    main.setLabelBg("color", "green")
+    main.addLabel(button+"title", "ADD")
+    main.setLabelBg(button+"title", "green")
 
     main.addLabelEntry("时间")
     main.addLabelEntry("地点")
@@ -167,8 +191,8 @@ def ReturnWButtonPress(button):
 
 def WriteWindowDefine():
     subWindow(WriteWindow)
-    main.addLabel("title",WritePageTitle)
-    main.setLabelBg("color", WritePageColor)
+    main.addLabel(WriteWindow+"title",WritePageTitle)
+    main.setLabelBg(WriteWindow+"title", WritePageColor)
 
     main.addButtons([ADDButton],ADDButtonPress)
     main.addButtons([DELButton],DELButtonPress)
@@ -176,11 +200,13 @@ def WriteWindowDefine():
     main.addButtons([NLButton],NLButtonPress)
     main.addButtons([ReturnButton],ReturnWButtonPress)
 
-    setButton(ADDButton,Wc1,Ww1,Wh1)
-    setButton(DelButton,Wc1,Ww1,Wh1)
-    setButton(ChangeButton,Wc1,Ww1,Wh1)
-    setButton(NLButton,Wc1,Ww1,Wh1)
-    setButton(ReturnWButton)
+    setButton(ADDButton,Writecolor1,Writewidth1,Writehigh1)
+    setButton(DelButton,Writecolor1,Writewidth1,Writehigh1)
+    setButton(ChangeButton,Writecolor1,Writewidth1,Writehigh1)
+    setButton(NLButton,Writecolor1,Writewidth1,Writehigh1)
+    setButton(ReturnWButton, Writecolor1,Writewidth1, Writehigh1)
+
+    subWindowEnd()
 
 #---endof Write window
 
@@ -188,9 +214,9 @@ def WriteWindowDefine():
 
 LookPageTitle = "看一看"
 LookPageColor = "yellow"
-Lc1 = "white"
-Lw1 = 100
-Lh1 = 100
+Lookcolor1 = "white"
+Lookwidth1 = 100
+Lookhigh1 = 100
 
 def SearchButtonPress(button):
     pass
@@ -201,8 +227,8 @@ def ReturnLButtonPress(button):
 
 def LookWindowDefine():
     subWindow(LookWindow)
-    main.addLabel("title",LookPageTitle)
-    main.setLabelBg("color", LookPageColor)
+    main.addLabel(LookWindow+"title",LookPageTitle)
+    main.setLabelBg(LookWindow+"title", LookPageColor)
 
     main.addLabelEntry("个人/群组")
     main.addLabelEntry("时间")
@@ -211,7 +237,7 @@ def LookWindowDefine():
     main.addLabelEntry("备注")
 
     main.addButtons([SearchButton],SearchButtonPress)
-    setButton(SearchButton,Lc1,Lw1,Lh1)
+    setButton(SearchButton,Lookcolor1,Lookwidth1,Lookhigh1)
 
     main.addButtons([ReturnButton],ReturnLButtonPress)
     setButton(ReturnLButton)
@@ -222,9 +248,9 @@ def LookWindowDefine():
 
 SettingPageTitle = "设置"
 SettingPageColor = "yellow"
-Sc1 = "white"
-Sw1 = 100
-Sh1 = 100
+Settingcolor1 = "white"
+Settingwidth1 = 100
+Settinghigh1 = 100
 
 def GroupButtonPress(button):
     pass
@@ -235,11 +261,11 @@ def ReturnSButtonPress(button):
 
 def SettingWindowDefine():
     subWindow(SettingWindow)
-    main.addLabel("title",SettingPageTitle)
-    main.setLabelBg("color", SettingPageColor)
+    main.addLabel(SettingWindow+"title",SettingPageTitle)
+    main.setLabelBg(SettingWindow+"title", SettingPageColor)
 
     main.addButtons([GroupButton],GroupButtonPress)
-    setButton(GroupButton,Sc1,Sw1,Sh1)
+    setButton(GroupButton,Settingcolor1,Settingwidth1,Settinghigh1)
 
     main.addButtons([ReturnButton],ReturnSButtonPress)
     setButton(ReturnSButton)
@@ -248,6 +274,12 @@ def SettingWindowDefine():
 
 
 
+def InitWindow():
+    loginWindowDefine()
+    ModeWindowDefine()
+    WriteWindowDefine()
+    LookWindowDefine()
+    SettingWindowDefine()
 
 
 
@@ -261,6 +293,9 @@ def SettingWindowDefine():
 
 
 
-#--------end of gui defination----------------------------------
+#--------end of gui defination---------------ModeWindow-------------------
 
+
+InitWindow()
 main.go()
+showWindow(LoginWindow)
